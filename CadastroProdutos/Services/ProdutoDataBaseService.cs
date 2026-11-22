@@ -45,10 +45,15 @@ namespace CadastroProdutos.Services
         {
             var produto = _context.Produtos.Find(id);
 
-            if (produto == null) return false;
+            if (produto is null)
+                return false;
 
             ValidateProduto(produtoAtualizado);
-            _context.Produtos.Update(produtoAtualizado);
+
+            produto.Nome = produtoAtualizado.Nome;
+            produto.Preco = produtoAtualizado.Preco;
+            produto.QuantidadeEstoque = produtoAtualizado.QuantidadeEstoque;
+
             _context.SaveChanges();
 
             return true;
@@ -60,17 +65,13 @@ namespace CadastroProdutos.Services
             {
                 throw new ArgumentException("O nome do produto não pode ser vazio.");
             }
-            if(produto.Nome == "Produto 1")
+            if (produto.Preco <= 0)
             {
-                throw new ArgumentException("O nome do produto não pode ser 'Produto 1'.");
+                throw new ArgumentException("O preço do produto deve ser maior que zero.");
             }
-            if (produto.Preco < 0)
+            if (produto.QuantidadeEstoque < 0)
             {
-                throw new ArgumentException("O preço do produto não pode ser negativo.");
-            }
-            if (produto.QuantidadeEstoque <= 0)
-            {
-                throw new ArgumentException("A quantidade em estoque não pode ser zero ou negativa.");
+                throw new ArgumentException("A quantidade em estoque não pode ser negativa.");
             }
         }
     }

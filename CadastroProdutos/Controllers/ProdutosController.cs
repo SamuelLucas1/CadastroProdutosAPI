@@ -54,20 +54,18 @@ namespace CadastroProdutos.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public ActionResult<Produto> Update(int id, Produto produtoAtualizado)
+        public ActionResult Update(int id, Produto produtoAtualizado)
         {
             try
             {
-                var produtoExistente = _productService.GetById(id);
+                var atualizado = _productService.Update(id, produtoAtualizado);
 
-                if (produtoExistente is null)
-                {
+                if (!atualizado)
                     return NotFound($"Produto com ID '{id}' não encontrado.");
-                }
 
-                return Ok(produtoExistente);
+                return NoContent();
             }
-            catch (Exception e)
+            catch (ArgumentException e)
             {
                 return BadRequest(e.Message);
             }

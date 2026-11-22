@@ -27,10 +27,12 @@ namespace CadastroProdutos.Controllers
 
             if (login.Usuario == "admin" && login.Senha == "1234")
             {
+                // Geração do token de administrador
                 role = "Admin";
             }
             else if (login.Usuario == "user" && login.Senha == "1234")
             {
+                // Geração do token do usuário comum
                 role = "User";
             }
             else
